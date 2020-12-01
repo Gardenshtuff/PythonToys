@@ -14,9 +14,8 @@ def Encode():
 	UncodedM = e1.get()
 	CodedM = ''
 	
-	print('C = ' + str(a) + "P + " + str(b) + " mod( " + str(modby) + " )" )
-	# send to window dialog
-	
+	formStr = 'C = ' + str(a) + "P + " + str(b) + " mod( " + str(modby) + " )"
+	#formulaLabel.textvariable = formStr
 	
 	c_i = []
 	u_i = []
@@ -28,13 +27,19 @@ def Encode():
 	print(u_i)
 	
 	for i in u_i:
-		i *= a
-		i += b
-		i = i % modby
+		if i < 0:
+			i = ord(' ')
+		else:
+			i *= a
+			i += b
+			i = i % modby
 		c_i.append(i)
 		
 	for ec in c_i:
-		CodedM += str(chr(ec+97))
+		if ec == 32:
+			CodedM += str(' ')
+		else:
+			CodedM += str(chr(ec+97))
 		
 	print(c_i)
 	print(CodedM)
@@ -47,7 +52,8 @@ def Decode():
 	CodedM = e2.get()
 	UncodedM = ''
 	
-	print('C = ' + str(a) + "P + " + str(b) + " mod(26)" )
+	formStr = 'C = ' + str(a) + "P + " + str(b) + " mod( " + str(modby) + " )"
+	#updateFormLabel()
 	
 	c_i = []
 	u_i = []
@@ -76,13 +82,14 @@ def Decode():
 	print(UncodedM)
 	e1.delete(0,100)
 	e1.insert(1,UncodedM)
-
+	
 #GUI
 window = tk.Tk()
 window.title('CypherOMatic')
 
 #Labels/Entry
-#formulaLabel = tk.Label(window, text = "a : ").grid(row = 12)
+formVal = "C = aP + b mod ( modby )"
+formulaLabel = tk.Label(window, textvariable = formVal).grid(row = 0, column = 4)
 
 tk.Label(window, text = "a : ").grid(row = 0)
 e3 = tk.Entry(window)
@@ -121,3 +128,8 @@ btn2.grid(row = 7, column = 1)
 #btn4.grid(row = 6, column = 1)
 
 window.mainloop()
+
+
+def updateFormLabel():
+	formulaLabel.textvariable = formStr
+
